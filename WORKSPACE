@@ -25,6 +25,17 @@ load("@rules_jvm_external//:setup.bzl", "rules_jvm_external_setup")
 rules_jvm_external_setup()
 
 ###############################################################################
+# Salesforce's spring boot rule
+###############################################################################
+http_archive(
+    name = "rules_spring",
+    sha256 = "9385652bb92d365675d1ca7c963672a8091dc5940a9e307104d3c92e7a789c8e",
+    urls = [
+        "https://github.com/salesforce/rules_spring/releases/download/2.1.4/rules-spring-2.1.4.zip",
+    ],
+)
+
+###############################################################################
 # Nodejs and typescript rules
 ###############################################################################
 NODE_VERSION = "16.13.2"
@@ -117,16 +128,27 @@ load(
 _nodejs_image_repositories()
 
 ###############################################################################
-# MyMoney packages deps
+# MyMoney java packages deps
 ###############################################################################
-load("//application:defs.bzl", "application_deps")
+load("@rules_jvm_external//:defs.bzl", "maven_install")
+load("//application:defs.bzl", "APPLICATION_DEPS")
+load("//core:defs.bzl", "CORE_DEPS")
 
-application_deps()
+maven_install(
+    artifacts = CORE_DEPS + APPLICATION_DEPS,
+    fail_if_repin_required = True,
+    fetch_sources = True,
+    maven_install_json = "//:maven_install.json",
+    repositories = ["https://repo1.maven.org/maven2"],
+)
 
-load("//core:defs.bzl", "core_deps")
+load("@maven//:defs.bzl", "pinned_maven_install")
 
-core_deps()
+pinned_maven_install()
 
+###############################################################################
+# MyMoney js packages deps
+###############################################################################
 # load("//web:defs.bzl", "web_deps")
 
 # web_deps()
