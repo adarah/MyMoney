@@ -17,6 +17,7 @@ load("@contrib_rules_jvm//java:defs.bzl", "JUNIT5_DEPS")
 
 java_test_suite(
     name = "core-test",
+    size = "small",
     srcs = glob(["src/test/java/**/*.java"]),
     runner = "junit5",
     runtime_deps = JUNIT5_DEPS,
