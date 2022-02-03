@@ -25,6 +25,30 @@ load("@rules_jvm_external//:setup.bzl", "rules_jvm_external_setup")
 rules_jvm_external_setup()
 
 ###############################################################################
+# Java contrib rules
+###############################################################################
+# This stuff is needed for junit5 support in java tests.
+# Once https://github.com/bazelbuild/bazel/issues/6681 is resolved, remove this.
+http_archive(
+    name = "contrib_rules_jvm",
+    sha256 = "f27b6a86481e78f659a5213978056aa88344041858548d76a1baba56a1e6048c",
+    strip_prefix = "rules_jvm-0.1.0",
+    url = "https://github.com/bazel-contrib/rules_jvm/archive/v0.1.0.tar.gz",
+)
+
+# Fetches the contrib_rules_jvm dependencies.
+# If you want to have a different version of some dependency,
+# you should fetch it *before* calling this.
+load("@contrib_rules_jvm//:repositories.bzl", "contrib_rules_jvm_deps")
+
+contrib_rules_jvm_deps()
+
+# Now ensure that the downloaded deps are properly configured
+load("@contrib_rules_jvm//:setup.bzl", "contrib_rules_jvm_setup")
+
+contrib_rules_jvm_setup()
+
+###############################################################################
 # Salesforce's spring boot rule
 ###############################################################################
 http_archive(
