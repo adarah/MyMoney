@@ -1,9 +1,10 @@
-load("//:common.bzl", "to_maven_testonly")
+load("//:common.bzl", "to_maven_neverlink", "to_maven_testonly")
 
-def money_deps():
+def deps():
     return [
         "javax.money:money-api:1.1",
         "org.javamoney:moneta:1.4.2",
+        "org.springframework.boot:spring-boot-starter-data-jpa:2.6.3",
     ]
 
 def test_deps():
@@ -16,4 +17,11 @@ def test_deps():
     ]
     return to_maven_testonly(deps)
 
-CORE_DEPS = money_deps() + test_deps()
+def compile_time_deps():
+    deps = [
+        "org.projectlombok:lombok:1.18.22",
+        "org.springframework:spring-context-indexer:5.3.15",
+    ]
+    return to_maven_neverlink(deps)
+
+CORE_DEPS = deps() + compile_time_deps() + test_deps()

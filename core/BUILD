@@ -9,6 +9,11 @@ java_library(
     ],
     deps = [
         artifact("javax.money:money-api"),
+        artifact("org.springframework.data:spring-data-commons"),
+        artifact("org.springframework.data:spring-data-jpa"),
+        artifact("org.springframework:spring-context-indexer"),
+        artifact("jakarta.persistence:jakarta.persistence-api"),
+        artifact("org.projectlombok:lombok"),
     ],
 )
 
